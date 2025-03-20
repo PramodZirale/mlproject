@@ -23,6 +23,9 @@ class Datatransformation:
         self.data_transformation_config = DataTransformationConfig()
 
     def get_data_tranformation_object(self):
+        '''
+        This function is responsible for data transformation
+        '''
         try:
             numerical_columns = ["writing_score", "reading_score"]
             categorical_columns = [
@@ -48,5 +51,17 @@ class Datatransformation:
                 ]
             )
 
-        except:
-            pass
+            logging.info("Numerical columns standard completed")
+            logging.info("Categorical columns encoding completed")
+
+            preprocessor = ColumnTransformer(
+                [
+                    ("num_pipeline", num_pipeline, numerical_columns),
+                    ("cat_pipeline", cat_pipeline, categorical_columns),
+                ]
+            )
+
+            return preprocessor
+
+        except Exception as e:
+            raise CustomException(e, sys)
